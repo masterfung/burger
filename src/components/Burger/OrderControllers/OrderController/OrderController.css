@@ -1,0 +1,62 @@
+.OrderController {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.OrderController button {
+  margin: 0 10px;
+}
+
+/* .OrderController button {
+  margin: 0 5px;
+  font-size: 1.6rem;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #aa6819;
+  outline: none;
+  cursor: pointer;
+}
+
+.OrderController button:disabled {
+  background-color: #ac9980;
+  border: 1px solid #7e7365;
+  color: #ccc;
+  cursor: default;
+}
+
+.OrderController button:hover:disabled {
+  background-color: #ac9980;
+  color: #ccc;
+  cursor: not-allowed;
+} */
+
+.Label {
+  padding: 10px;
+  font-weight: bold;
+  width: 80px;
+}
+
+.OrderController .Minus {
+  background-color: #d39952;
+  color: white;
+}
+
+.OrderController .Add {
+  background-color: #8f5e1e;
+  color: white;
+}
+
+.OrderController .Minus:hover,
+.OrderController .Minus:active {
+  background-color: #daa972;
+  color: white;
+}
+
+.OrderController .Add:hover,
+.OrderController .Add:active {
+  background-color: #99703f;
+  color: white;
+}
