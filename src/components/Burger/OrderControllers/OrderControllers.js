@@ -31,7 +31,7 @@ class OrderControllers extends Component {
   render() {
     return <Grid>
         <Row className="show-grid">
-          <InfoModal show={this.state.show} onHide={this.handleClose} closeModal={this.handleClose} />
+          <InfoModal ingredients={this.props.ingredients} show={this.state.show} onHide={this.handleClose} closeModal={this.handleClose} price={this.props.price} />
           <Col xs={12} md={6}>
             <h3>Total Price</h3>
             <h4>${this.props.price.toFixed(2)}</h4>

@@ -68,17 +68,10 @@ class BurgerBuilder extends Component {
     for (let key in disabledButtons) {
       disabledButtons[key] = disabledButtons[key] <= 0;
     }
-    return (
-      <Aux>
+    return <Aux>
         <Burger ingredients={this.state.ingredients} />
-        <OrderControllers
-          price={this.state.totalPrice}
-          disabled={disabledButtons}
-          addIngredients={this.addIngredientHandler}
-          removeIngredients={this.removeIngredientHandler}
-        />
-      </Aux>
-    );
+        <OrderControllers price={this.state.totalPrice} ingredients={this.state.ingredients} disabled={disabledButtons} addIngredients={this.addIngredientHandler} removeIngredients={this.removeIngredientHandler} />
+      </Aux>;
   }
 }
 

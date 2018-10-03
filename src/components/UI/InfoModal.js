@@ -7,15 +7,22 @@ class InfoModal extends Component {
   render() {
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Order Summary</Modal.Title>
+        <Modal.Header>
+          <Modal.Title>Your Order Details:</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Your Order Details:</h4>
-					<OrderSummary />
+          <OrderSummary
+            ingredients={this.props.ingredients}
+            price={this.props.price}
+          />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.props.closeModal}>Close</Button>
+          <Button onClick={this.props.closeModal} bsStyle="danger">
+            Cancel
+          </Button>
+          <Button onClick={this.props.closeModal} bsStyle="success">
+            Continue
+          </Button>
         </Modal.Footer>
       </Modal>
     );
