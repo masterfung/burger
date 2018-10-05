@@ -4,6 +4,10 @@ import { Modal, Button, OverlayTrigger } from "react-bootstrap";
 import OrderSummary from "../Burger/OrderSummary/OrderSummary";
 
 class InfoModal extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+		return nextProps.show !== this.props.show;
+	}
+
   render() {
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
