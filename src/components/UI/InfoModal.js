@@ -1,12 +1,21 @@
 import React, { Component } from "react";
-import { Modal, Button, OverlayTrigger } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 
 import OrderSummary from "../Burger/OrderSummary/OrderSummary";
 
 class InfoModal extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.show !== this.props.show;
+	constructor(props) {
+		super(props);
+		this.state = {
+			loading: false
+		}
 	}
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      nextProps.show !== this.props.show ||
+      nextProps.children !== this.props.children
+    );
+  }
 
   render() {
     return (
@@ -24,7 +33,7 @@ class InfoModal extends Component {
           <Button onClick={this.props.closeModal} bsStyle="danger">
             Cancel
           </Button>
-          <Button onClick={this.props.closeModal} bsStyle="success">
+          <Button onClick={this.props.purchaseContinue} bsStyle="success">
             Continue
           </Button>
         </Modal.Footer>

@@ -12,30 +12,28 @@ const controls = [
 ];
 
 class OrderControllers extends Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      show: false
-    };
-  }
-
-  handleClose = () => {
-    this.setState({ show: false });
-  };
-
-  handleShow = () => {
-    this.setState({ show: true });
-  };
 
   render() {
-    return <Grid>
+    return (
+      <Grid>
         <Row className="show-grid">
-          <InfoModal ingredients={this.props.ingredients} show={this.state.show} onHide={this.handleClose} closeModal={this.handleClose} price={this.props.price} />
+          <InfoModal
+            ingredients={this.props.ingredients}
+            show={this.props.show}
+            onHide={this.props.closeModal}
+            closeModal={this.props.closeModal}
+            price={this.props.price}
+            loading={this.props.loading}
+            purchaseContinue={this.props.purchaseContinue}
+          />
           <Col xs={12} md={6}>
             <h3>Total Price</h3>
             <h4>${this.props.price.toFixed(2)}</h4>
-            <Button bsStyle="primary" disabled={this.props.price === 0} onClick={this.handleShow}>
+            <Button
+              bsStyle="primary"
+              disabled={this.props.price === 0}
+              onClick={this.props.handleModalShow}
+            >
               Order Burger
             </Button>
           </Col>
@@ -51,7 +49,8 @@ class OrderControllers extends Component {
             ))}
           </Col>
         </Row>
-      </Grid>;
+      </Grid>
+    );
   }
 }
 

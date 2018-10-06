@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import { css } from "react-emotion";
+import { ClipLoader } from "react-spinners";
 
 import Aux from "../../hoc/Aux";
 import Burger from "../../components/Burger/Burger";
 import OrderControllers from "../../components/Burger/OrderControllers/OrderControllers";
+import axios from "../../axios-orders";
 
 const PRICES = {
   lettuce: 0.5,
@@ -11,12 +14,20 @@ const PRICES = {
   meat: 2.9
 };
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
+
 class BurgerBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
       ingredients: { lettuce: 0, bacon: 0, cheese: 0, meat: 0 },
-      totalPrice: 0
+      totalPrice: 0,
+      loadingSpinner: false,
+      show: false
     };
   }
 
@@ -26,6 +37,7 @@ class BurgerBuilder extends Component {
     const updatedIngredients = {
       ...this.state.ingredients
     };
+
     updatedIngredients[type] = updatedCount;
     let priceAddition = PRICES[type];
 
@@ -60,6 +72,44 @@ class BurgerBuilder extends Component {
     }
   };
 
+  purchaseContinueHandler = () => {
+    this.setState({ loadingSpinner: true });
+    const order = {
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+      customer: {
+        name: "Johnny Hung",
+        address: {
+          street: "80 Orwen Hatch St",
+          street2: "Apartment 333",
+          city: "San Francisco",
+          state: "CA",
+          zip: "94107"
+        },
+        email: "reliable@gmail.com"
+      },
+      deliveryMethod: "standard"
+    };
+    axios
+      .post("/orders.json", order)
+      .then(response => {
+        console.log(response, "LOADING STATE SHOWS!");
+        this.setState({ loadingSpinner: false, show: false });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({ loadingSpinner: false, show: false });
+      });
+  };
+
+  handleModalClose = () => {
+    this.setState({ show: false });
+  };
+
+  handleModalShow = () => {
+    this.setState({ show: true });
+  };
+
   render() {
     let disabledButtons = {
       ...this.state.ingredients
@@ -68,10 +118,29 @@ class BurgerBuilder extends Component {
     for (let key in disabledButtons) {
       disabledButtons[key] = disabledButtons[key] <= 0;
     }
-    return <Aux>
+    return (
+      <Aux>
         <Burger ingredients={this.state.ingredients} />
-        <OrderControllers price={this.state.totalPrice} ingredients={this.state.ingredients} disabled={disabledButtons} addIngredients={this.addIngredientHandler} removeIngredients={this.removeIngredientHandler} />
-      </Aux>;
+        <ClipLoader
+          className={override}
+          sizeUnit={"px"}
+          size={100}
+          color={"#123abc"}
+          loading={this.state.loadingSpinner}
+        />
+        <OrderControllers
+          price={this.state.totalPrice}
+          ingredients={this.state.ingredients}
+          disabled={disabledButtons}
+          closeModal={this.handleModalClose}
+          handleModalShow={this.handleModalShow}
+          show={this.state.show}
+          addIngredients={this.addIngredientHandler}
+          removeIngredients={this.removeIngredientHandler}
+          purchaseContinue={this.purchaseContinueHandler}
+        />
+      </Aux>
+    );
   }
 }
 
