@@ -15,8 +15,9 @@ const PRICES = {
 };
 
 const override = css`
-  display: block;
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-color: red;
 `;
 
@@ -24,7 +25,7 @@ class BurgerBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ingredients: { lettuce: 0, bacon: 0, cheese: 0, meat: 0 },
+      ingredients: null,
       totalPrice: 0,
       loadingSpinner: false,
       show: false
@@ -110,6 +111,23 @@ class BurgerBuilder extends Component {
     this.setState({ show: true });
   };
 
+  componentDidMount() {
+    this.setState({ loadingSpinner: true });
+    axios.get("/ingredients.json").then(res => {
+			let prices = 0;
+			for (let key in res.data) {
+				if (res.data[key]>0) {
+					prices += res.data[key] * PRICES[key];
+				}
+			}
+      this.setState({
+        ingredients: res.data,
+				loadingSpinner: false,
+				totalPrice: prices
+      });
+    });
+  }
+
   render() {
     let disabledButtons = {
       ...this.state.ingredients
@@ -118,29 +136,36 @@ class BurgerBuilder extends Component {
     for (let key in disabledButtons) {
       disabledButtons[key] = disabledButtons[key] <= 0;
     }
-    return (
-      <Aux>
-        <Burger ingredients={this.state.ingredients} />
-        <ClipLoader
-          className={override}
-          sizeUnit={"px"}
-          size={100}
-          color={"#123abc"}
-          loading={this.state.loadingSpinner}
-        />
-        <OrderControllers
-          price={this.state.totalPrice}
-          ingredients={this.state.ingredients}
-          disabled={disabledButtons}
-          closeModal={this.handleModalClose}
-          handleModalShow={this.handleModalShow}
-          show={this.state.show}
-          addIngredients={this.addIngredientHandler}
-          removeIngredients={this.removeIngredientHandler}
-          purchaseContinue={this.purchaseContinueHandler}
-        />
-      </Aux>
+
+    let burger = (
+      <ClipLoader
+        className={override}
+        sizeUnit={"px"}
+        size={100}
+        color={"#123abc"}
+        loading={this.state.loadingSpinner}
+      />
     );
+
+    if (this.state.ingredients) {
+      burger = (
+        <div>
+          <Burger ingredients={this.state.ingredients} />
+          <OrderControllers
+            price={this.state.totalPrice}
+            ingredients={this.state.ingredients}
+            disabled={disabledButtons}
+            closeModal={this.handleModalClose}
+            handleModalShow={this.handleModalShow}
+            show={this.state.show}
+            addIngredients={this.addIngredientHandler}
+            removeIngredients={this.removeIngredientHandler}
+            purchaseContinue={this.purchaseContinueHandler}
+          />
+        </div>
+      );
+    }
+    return <Aux>{burger}</Aux>;
   }
 }
 
