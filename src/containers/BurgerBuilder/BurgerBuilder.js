@@ -21,6 +21,10 @@ const override = css`
   border-color: red;
 `;
 
+const centering = css`
+  max-width: 50%;
+`;
+
 class BurgerBuilder extends Component {
   constructor(props) {
     super(props);
@@ -59,7 +63,7 @@ class BurgerBuilder extends Component {
       const updatedCount = oldCount - 1;
       const updatedIngredients = {
         ...this.state.ingredients
-      };
+      }
       updatedIngredients[type] = updatedCount;
       let priceDeduction = PRICES[type];
 
@@ -114,16 +118,16 @@ class BurgerBuilder extends Component {
   componentDidMount() {
     this.setState({ loadingSpinner: true });
     axios.get("/ingredients.json").then(res => {
-			let prices = 0;
-			for (let key in res.data) {
-				if (res.data[key]>0) {
-					prices += res.data[key] * PRICES[key];
-				}
-			}
+      let prices = 0;
+      for (let key in res.data) {
+        if (res.data[key] > 0) {
+          prices += res.data[key] * PRICES[key];
+        }
+      }
       this.setState({
         ingredients: res.data,
-				loadingSpinner: false,
-				totalPrice: prices
+        loadingSpinner: false,
+        totalPrice: prices
       });
     });
   }
@@ -138,13 +142,15 @@ class BurgerBuilder extends Component {
     }
 
     let burger = (
-      <ClipLoader
-        className={override}
-        sizeUnit={"px"}
-        size={100}
-        color={"#123abc"}
-        loading={this.state.loadingSpinner}
-      />
+      <div className={override}>
+        <ClipLoader
+          sizeUnit={"px"}
+          size={100}
+          className={centering}
+          color={"#123abc"}
+          loading={this.state.loadingSpinner}
+        />
+      </div>
     );
 
     if (this.state.ingredients) {
