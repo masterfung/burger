@@ -13,8 +13,8 @@ class App extends Component {
         <div>
           <Nav />
           <Layout>
-            <Route path="/" component={BurgerBuilder} />
-            <Route path="/about" component={About} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/" component={BurgerBuilder} />
           </Layout>
         </div>
       </BrowserRouter>
