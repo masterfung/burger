@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Layout from "./components/Layout/Layout";
 import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
@@ -13,8 +13,11 @@ class App extends Component {
         <div>
           <Nav />
           <Layout>
-            <Route exact path="/about" component={About} />
-            <Route exact path="/" component={BurgerBuilder} />
+            <Switch>
+              <Route path="/about" component={About} />
+              <Route path="/" component={BurgerBuilder} />
+              <Route render={() => <h1>Page Not Found</h1>} />
+            </Switch>
           </Layout>
         </div>
       </BrowserRouter>
